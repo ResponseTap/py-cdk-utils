@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "py-cdk-utils"
+version = "0.1.0"
+description = "Utilities to assist with building Python-based applications in AWS-CDK"
+authors = ["Greg Farrow <greg.farrow1@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.1"
+pytest-cov = "^2.10.1"
+pytest-html = "^3.1.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
