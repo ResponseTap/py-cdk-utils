@@ -1,6 +1,6 @@
 import os
 from enum import Enum
-from typing import Any, Dict, Literal
+from typing import Any, Dict
 
 
 class DeployEnv(Enum):
@@ -15,7 +15,7 @@ class DeployEnv(Enum):
     PROD = "production"
 
 
-deploy_env = DeployEnv(os.environ.get("DEPLOY_ENV", "development").lower())
+deploy_env = DeployEnv(os.getenv("DEPLOY_ENV", "development").lower())
 
 
 def get_config(default_value: Any, env_config: Dict[DeployEnv, Any]) -> Any:
