@@ -5,6 +5,13 @@ description = "Utilities to assist with building Python-based applications in AW
 authors = ["Greg Farrow <greg.farrow1@gmail.com>"]
 license = "MIT"
 
+[tool.semantic_release]
+version_variable = "src/py_cdk_utils/__init__.py:__version__"
+version_source = "tag"
+upload_to_pypi = "true"
+branch = "main"
+upload_to_release = "true"
+
 [tool.poetry.dependencies]
 python = "^3.8"
 
@@ -13,6 +20,7 @@ pytest = "^6.2.1"
 pytest-cov = "^2.10.1"
 pytest-html = "^3.1.1"
 pytest-mock = "^3.4.0"
+python-semantic-release = "^7.8.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
