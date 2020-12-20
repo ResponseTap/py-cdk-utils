@@ -69,35 +69,35 @@ jobs:
         run: |
           pip install poetry
           poetry install
-      - name: Bump version and tagging
+      - name: Configure Git User
         run: |
           git config --local user.email "engineering@responsetap.com"
           git config --local user.name "GitHub Versioning Action"
-          git pull origin main
+      - name: Bump version and tagging
+        id: version
+        run: |
           poetry run semantic-release version
           poetry version $(grep "version" src/py_cdk_utils/__init__.py | cut -d "'" -f 2 | cut -d '"' -f 2)
           git commit -m "refactor(version): Bump version" -a
+          git push
+          echo ::set-output name=release_tag::$(grep "version" src/py_cdk_utils/__init__.py | cut -d "'" -f 2 | cut -d '"' -f 2)
+      - name: Generate Changelog
+        run: |
           poetry run semantic-release changelog
           git commit -m "docs(changelog): Update changelog" -a
-          git push
-      - name: Get release tag version from package version
-        run: |
-          echo ::set-output name=release_tag::$(grep "version" src/py_cdk_utils/__init__.py | cut -d "'" -f 2 | cut -d '"' -f 2)
-        id: release
       - name: Create Release with new version
-        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.release.outputs.release_tag }}
-          release_name: ${{ steps.release.outputs.release_tag }}
+          tag_name: ${{ steps.version.outputs.release_tag }}
+          release_name: ${{ steps.version.outputs.release_tag }}
           draft: false
           prerelease: false
       - name: Build Package
         run: |
           poetry build
-      - name: Build package and publish to PyPI
+      - name: Publish to PyPI
         env:
           PYPI_USERNAME: __token__
           PYPI_PASSWORD: ${{ secrets.PYPI_API_KEY }}
