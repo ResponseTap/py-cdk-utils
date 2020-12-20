@@ -60,6 +60,8 @@ jobs:
     steps:
       - name: Clone Repo
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v2
         with:
           python-version: "3.8.x"
@@ -67,3 +69,37 @@ jobs:
         run: |
           pip install poetry
           poetry install
+      - name: Bump version and tagging
+        run: |
+          git config --local user.email "engineering@responsetap.com"
+          git config --local user.name "GitHub Versioning Action"
+          git pull origin main
+          poetry run semantic-release version
+          poetry version $(grep "version" */__init__.py | cut -d "'" -f 2 | cut -d '"' -f 2)
+          poetry run semantic-release changelog
+          git commit -m "docs(changelog): GH Action - bump versions and update changelog" -a
+          git push
+      - name: Get release tag version from package version
+        run: |
+          echo ::set-output name=release_tag::$(grep "version" */__init__.py | cut -d "'" -f 2 | cut -d '"' -f 2)
+        id: release
+      - name: Create Release with new version
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.release.outputs.release_tag }}
+          release_name: ${{ steps.release.outputs.release_tag }}
+          draft: false
+          prerelease: false
+      - name: Build Package
+        run: |
+          poetry build
+      - name: Build package and publish to PyPI
+        env:
+          PYPI_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          poetry config repositories.test-pypi https://test.pypi.org/legacy/
+          poetry publish --build -r test-pypi -u $PYPI_USERNAME -p $PYPI_PASSWORD
