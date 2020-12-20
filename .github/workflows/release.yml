@@ -75,12 +75,10 @@ jobs:
           git config --local user.name "GitHub Versioning Action"
       - name: Bump version and tagging
         id: version
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           poetry run semantic-release version
           poetry version $(grep "version" src/py_cdk_utils/__init__.py | cut -d "'" -f 2 | cut -d '"' -f 2)
-          poetry run semantic-release changelog --post
+          poetry run semantic-release changelog
           git commit -m "refactor(version): Bump version and update changelog" -a
           git push
           echo ::set-output name=release_tag::$(grep "version" src/py_cdk_utils/__init__.py | cut -d "'" -f 2 | cut -d '"' -f 2)
