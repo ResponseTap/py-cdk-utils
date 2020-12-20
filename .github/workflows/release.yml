@@ -78,13 +78,10 @@ jobs:
         run: |
           poetry run semantic-release version
           poetry version $(grep "version" src/py_cdk_utils/__init__.py | cut -d "'" -f 2 | cut -d '"' -f 2)
-          git commit -m "refactor(version): Bump version" -a
+          poetry run semantic-release changelog
+          git commit -m "refactor(version): Bump version and update changelog" -a
           git push
           echo ::set-output name=release_tag::$(grep "version" src/py_cdk_utils/__init__.py | cut -d "'" -f 2 | cut -d '"' -f 2)
-      - name: Generate Changelog
-        run: |
-          poetry run semantic-release changelog
-          git commit -m "docs(changelog): Update changelog" -a
       - name: Create Release with new version
         uses: actions/create-release@v1
         env:
