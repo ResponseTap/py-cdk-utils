@@ -85,4 +85,4 @@ to abide by its terms. You will find the terms [here](CODE_OF_CONDUCT.md).
 
 ## License
 
-This library is published under the [MIT License](LICENSE.md)
+This library is published under the [MIT License](LICENSE.md).
