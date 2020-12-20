@@ -26,6 +26,6 @@ def get_config(default_value: Any, env_config: Dict[DeployEnv, Any]) -> Any:
     :param env_config: A dictionary of Key (environment name), Value (environment specific value) pairs.
         Key: attribute of DeployEnv
         Value: Any
-    :return: The qualified environment configuration value
+    :return: Any: The qualified environment configuration value
     """
     return env_config.get(deploy_env, default_value)
