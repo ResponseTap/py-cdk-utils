@@ -8,6 +8,7 @@ license = "MIT"
 [tool.semantic_release]
 version_variable = "src/py_cdk_utils/__init__.py:__version__"
 version_source = "tag"
+branch = "main"
 
 [tool.poetry.dependencies]
 python = "^3.8"
