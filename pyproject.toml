@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "py-cdk-utils"
-version = "0.2.0"
+version = "1.0.0"
 description = "Utilities to assist with building Python-based applications in AWS-CDK"
 authors = ["Greg Farrow <greg.farrow1@gmail.com>"]
 license = "MIT"
