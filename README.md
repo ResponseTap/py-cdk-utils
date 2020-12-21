@@ -50,6 +50,7 @@ The following environment names are available by default:
 - local
 - development
 - test
+- performance
 - pre-production
 - production
 

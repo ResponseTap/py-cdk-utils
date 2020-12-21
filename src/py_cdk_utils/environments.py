@@ -11,6 +11,7 @@ class DeployEnv(Enum):
     LOCAL = "local"
     DEV = "development"
     TEST = "test"
+    PERF = "performance"
     PRE_PROD = "pre-production"
     PROD = "production"
 
